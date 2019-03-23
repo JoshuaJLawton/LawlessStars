@@ -46,7 +46,7 @@ public class Player : Ship {
 
     void OnTriggerEnter2D(Collider2D Other)
     {
-        switch (Other.tag)
+        switch (Other.gameObject.tag)
         {
             case "Laser":
                 if (Other.GetComponent<ProjectileController>().Owner != this.gameObject)
@@ -54,7 +54,12 @@ public class Player : Ship {
                     Debug.Log("LASER");
                 }
                 break;
+
+            case "Cargo":
+                Destroy(Other.gameObject);
+                break;
         }
 
     }
+
 }

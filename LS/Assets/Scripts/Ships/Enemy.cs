@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Enemy : Ship
 {
+
+    public GameObject LootPF;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -45,6 +48,12 @@ public class Enemy : Ship
     {
         Instantiate(Smoke, new Vector3(this.transform.position.x, this.transform.position.y, -1f), this.transform.rotation);
         yield return new WaitForSeconds(0.1f);
+        int count = Random.Range(1,5);
+        while (count > 0)
+        {
+            Instantiate(LootPF, new Vector3(this.transform.position.x, this.transform.position.y, 1f), this.transform.rotation);
+            count--;
+        }
         Destroy(this.gameObject);
     }
 
