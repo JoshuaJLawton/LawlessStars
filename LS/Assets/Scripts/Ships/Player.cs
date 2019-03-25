@@ -11,9 +11,15 @@ public class Player : Ship {
 
     int Damage = 10;
 
-	// Use this for initialization
-	void Start ()
+    public int Inventory = 0;
+    public int CargoHold;
+
+    // Use this for initialization
+    void Start ()
     {
+        Inventory = 0;
+        CargoHold = 20;
+
         RB = this.GetComponent<Rigidbody2D>();
         Speed = 5;
         TurnSpeed = 5;
@@ -56,7 +62,11 @@ public class Player : Ship {
                 break;
 
             case "Cargo":
-                Destroy(Other.gameObject);
+                if (Inventory < CargoHold)
+                {
+                    Inventory++;
+                    Destroy(Other.gameObject);
+                }
                 break;
         }
 
