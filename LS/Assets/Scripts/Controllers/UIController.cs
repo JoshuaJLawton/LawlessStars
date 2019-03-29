@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour {
     public GameObject Player;
     private Player _player;
 
+    public Text Digits;
     public Text Inventory;
 
 	// Use this for initialization
@@ -19,8 +20,14 @@ public class UIController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        DisplayDigits();
         DisplayInventory();
 	}
+
+    void DisplayDigits()
+    {
+        Digits.text = "Digits: " + _player.Digits.ToString();
+    }
 
     void DisplayInventory()
     {
@@ -37,5 +44,7 @@ public class UIController : MonoBehaviour {
             Inventory.text = "Inventory: " + _player.Inventory.ToString() + " / " + _player.CargoHold.ToString();
         }
     }
+
+
 
 }

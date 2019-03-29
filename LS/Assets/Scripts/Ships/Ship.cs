@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Ship : MonoBehaviour {
 
-    // Speed in which the ship can move, Speed in which the ship can turn
-    public float Speed, TurnSpeed;
+    [Header("Ship Stats")]
+    // Speed in which the ship can move
+    public float Speed;
+    // Speed in which the ship can turn
+    public float TurnSpeed;
     // The ship's maximum amount of health
     public int MaxHealth;
     // The current health of the ship

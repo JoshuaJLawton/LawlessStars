@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Enemy : Ship
 {
-
     public GameObject LootPF;
 
 	// Use this for initialization
@@ -12,7 +11,6 @@ public class Enemy : Ship
     {
         MaxHealth = 50;
         CurrentHealth = MaxHealth;
-
 	}
 	
 	// Update is called once per frame
@@ -28,7 +26,7 @@ public class Enemy : Ship
             case "Laser":
                 Debug.Log("LASER");
                 GameObject Explosion = Other.GetComponent<ProjectileController>().Explosion;
-                Instantiate(Explosion, new Vector3(Other.transform.position.x, Other.transform.position.y, -1f), Other.transform.rotation);
+                Instantiate(Explosion, new Vector3(Other.transform.position.x, Other.transform.position.y, 0f), Other.transform.rotation);
                 Destroy(Other.gameObject);
                 CurrentHealth = CurrentHealth - Other.GetComponent<ProjectileController>().Damage;
                 break;
@@ -46,12 +44,12 @@ public class Enemy : Ship
 
     IEnumerator DestroyShip()
     {
-        Instantiate(Smoke, new Vector3(this.transform.position.x, this.transform.position.y, -1f), this.transform.rotation);
+        Instantiate(Smoke, new Vector3(this.transform.position.x, this.transform.position.y, 0f), this.transform.rotation);
         yield return new WaitForSeconds(0.1f);
         int count = Random.Range(1,5);
         while (count > 0)
         {
-            Instantiate(LootPF, new Vector3(this.transform.position.x, this.transform.position.y, 1f), this.transform.rotation);
+            Instantiate(LootPF, new Vector3(this.transform.position.x, this.transform.position.y, 0f), this.transform.rotation);
             count--;
         }
         Destroy(this.gameObject);
