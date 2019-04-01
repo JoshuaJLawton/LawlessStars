@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour {
     public GameObject Player;
     private Player _player;
 
+    public Text Health;
     public Text Digits;
     public Text Inventory;
 
@@ -20,9 +21,15 @@ public class UIController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        DisplayHealth();
         DisplayDigits();
         DisplayInventory();
 	}
+
+    void DisplayHealth()
+    {
+        Health.text = "Health: " + _player.CurrentHealth.ToString();
+    }
 
     void DisplayDigits()
     {

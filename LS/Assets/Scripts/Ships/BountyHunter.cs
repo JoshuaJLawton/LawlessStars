@@ -202,8 +202,8 @@ public class BountyHunter : Ship
     IEnumerator DestroyShip()
     {
         Instantiate(Smoke, new Vector3(this.transform.position.x, this.transform.position.y, 0f), this.transform.rotation);
-        TransferDigits();
         yield return new WaitForSeconds(0.1f);
+        TransferDigits();
         Destroy(this.gameObject);
     }
 
@@ -215,6 +215,11 @@ public class BountyHunter : Ship
                 if (Other.GetComponent<ProjectileController>().Owner != this.gameObject)
                 {
                     HitBy = Other.GetComponent<ProjectileController>().Owner;
+
+                    // TEMP
+                    Bounty = HitBy;
+                    //
+
                     GameObject Explosion = Other.GetComponent<ProjectileController>().Explosion;
                     Instantiate(Explosion, new Vector3(Other.transform.position.x, Other.transform.position.y, 0f), Other.transform.rotation);
                     Destroy(Other.gameObject);

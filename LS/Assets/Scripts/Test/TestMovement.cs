@@ -9,7 +9,7 @@ public class TestMovement : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        Rand = Random.Range(1, 360);
+        Rand = Random.Range(60, 360);
 	}
 	
 	// Update is called once per frame

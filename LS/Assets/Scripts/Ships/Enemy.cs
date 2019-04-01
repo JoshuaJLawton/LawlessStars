@@ -29,6 +29,17 @@ public class Enemy : Ship
                 Instantiate(Explosion, new Vector3(Other.transform.position.x, Other.transform.position.y, 0f), Other.transform.rotation);
                 Destroy(Other.gameObject);
                 CurrentHealth = CurrentHealth - Other.GetComponent<ProjectileController>().Damage;
+
+                // TEMP
+                float interpolation = - 4 * Time.deltaTime;
+
+                Vector3 Position = this.transform.position;
+                Position.x = Mathf.Lerp(this.transform.position.x, Other.GetComponent<ProjectileController>().Owner.transform.position.x, interpolation);
+                Position.y = Mathf.Lerp(this.transform.position.y, Other.GetComponent<ProjectileController>().Owner.transform.position.y, interpolation);
+
+                this.transform.position = Position;
+                //
+
                 break;
         }
 
