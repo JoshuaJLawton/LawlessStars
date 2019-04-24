@@ -12,8 +12,8 @@ public class BackgroundController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Ship = GameObject.Find("Player");
-        transform.position = new Vector3(Ship.transform.position.x, Ship.transform.position.y, 0);
+        //Ship = GameObject.Find("Player");
+        transform.position = new Vector3(Ship.transform.position.x, Ship.transform.position.y, this.gameObject.transform.position.z);
 
     }
 

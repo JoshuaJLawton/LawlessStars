@@ -12,8 +12,8 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Ship = GameObject.Find("Player");
-        transform.position = new Vector3(Ship.transform.position.x, Ship.transform.position.y, -15);
+        // Ship = GameObject.Find("Player");
+        transform.position = new Vector3(Ship.transform.position.x, Ship.transform.position.y, this.gameObject.transform.position.z);
 
     }
 

@@ -60,7 +60,7 @@ public class Enemy : Ship
         int count = Random.Range(1,5);
         while (count > 0)
         {
-            Instantiate(LootPF, new Vector3(this.transform.position.x, this.transform.position.y, 0f), this.transform.rotation);
+            //Instantiate(LootPF, new Vector3(this.transform.position.x, this.transform.position.y, 0f), this.transform.rotation);
             count--;
         }
         Destroy(this.gameObject);

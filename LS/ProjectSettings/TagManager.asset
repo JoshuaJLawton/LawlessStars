@@ -8,6 +8,12 @@ TagManager:
   - Enemy
   - Cargo
   - Pull
+  - Star
+  - Bounty Hunter
+  - Pirate
+  - Cargo Ship
+  - Transporter
+  - Station
   layers:
   - Default
   - TransparentFX

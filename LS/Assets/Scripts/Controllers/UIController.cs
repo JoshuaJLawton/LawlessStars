@@ -23,7 +23,7 @@ public class UIController : MonoBehaviour {
     {
         DisplayHealth();
         DisplayDigits();
-        DisplayInventory();
+        //DisplayInventory();
 	}
 
     void DisplayHealth()
@@ -36,6 +36,7 @@ public class UIController : MonoBehaviour {
         Digits.text = "Digits: " + _player.Digits.ToString();
     }
 
+    /*
     void DisplayInventory()
     {
         if (_player.Inventory <= 0)
@@ -51,7 +52,7 @@ public class UIController : MonoBehaviour {
             Inventory.text = "Inventory: " + _player.Inventory.ToString() + " / " + _player.CargoHold.ToString();
         }
     }
-
+    */
 
 
 }

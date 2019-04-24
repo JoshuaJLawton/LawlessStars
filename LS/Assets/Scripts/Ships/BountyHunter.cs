@@ -15,79 +15,66 @@ public class BountyHunter : Ship
     public bool IsTracking;
     // The current distance between the Hunter and its bounty
     public float Distance;
-    // If the hunter is attacked by another ship, it will defend itself
-    public GameObject Attacker;
-
-    [Header("Loot")]
-    // The hunter's Digits
-    public int Digits;
-
-    [Header("Other")]
-    // Holds the projectile prefab to be launched
-    public GameObject Projectile;
-    // The damage dealt by this ship
-    public int Damage;
-    // If the ship has recently fired
-    bool HasFired = false;
-    // The last ship to have hit this ship
-    public GameObject HitBy;
-
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
+        Zone = GetZone();
+        Digits = SetDigits();
+        Damage = SetDamage();
+        MaxHealth = SetMaxHealth();
+        CurrentHealth = MaxHealth;
+        Speed = SetSpeed();
+        TurnSpeed = SetTurnSpeed();
+        Shields = SetShields();
+
         IsTracking = false;
-
-        Damage = 5;
-
-        SetDigits();      
-        
+        HasFired = false;
+        Attacker = null;
+        RoamDestination = Destination();
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
+    {
+        // To prevent bounties going up
+        BountyPrice = 0; 
+
+        IsAlive();
+        Hunt();        
+    }
+
+    #region Bounty Hunting
+
+    void Hunt()
     {
         UpdateBounty();
 
-        Distance = Vector3.Distance(this.transform.position, Bounty.transform.position);
-
-        HasHealth();
-
-        if (Distance >= 10)
+        if (IsBeingAttacked())
         {
-            Debug.Log("TrackBounty");
-            TrackBounty();
+            AttackTarget(Attacker);
+        }
+        else if (Bounty != null)
+        {
+            if (Distance > 10)
+            {
+                Debug.Log("TrackBounty");
+                TrackBounty();
+            }
+            else
+            {
+                Debug.Log("AttackBounty");
+                AttackTarget(Bounty);
+            }
         }
         else
         {
-            Debug.Log("AttackBounty");
-            AttackBounty();
+            Roam();
         }
 
-        
     }
 
-    #region Initialisation
-    void SetDigits()
-    {
-        int x = (int)this.transform.position.x;
-        if (x < 0)
-        {
-            x = x * -1;
-        }
 
-        int y = (int)this.transform.position.y;
-        if (y < 0)
-        {
-            y = y * -1;
-        }
-
-        Digits = x + y;
-    }
-
-    #endregion
-
-    #region Bounty Hunting
     void TrackBounty()
     {
         // Tracks bounty's current location
@@ -95,56 +82,43 @@ public class BountyHunter : Ship
         {
             StartCoroutine(Track());
         }
-
-        // Rotate towards location
-        Vector3 Direction = Tracker - transform.position;
-        float Angle = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg + 90;
-        Quaternion TargetRotation = Quaternion.Euler(0, 0, Angle);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, TargetRotation, TurnSpeed);
         
         if (Distance < 1 && Distance > -1)
         {
             // Stop and await new coordinates
-            transform.Translate(new Vector3(0, 0 * Time.deltaTime, 0));
+            MoveTowardsLocation(Tracker, 0);
         }
         else
         {
             // Move towards location
-            transform.Translate(new Vector3(0, -Speed * Time.deltaTime, 0));
+            MoveTowardsLocation(Tracker, Speed);
         }
 
     }
 
-    void AttackBounty()
+    void AttackTarget(GameObject Target)
     {
-        // Rotate towards bounty
-        Vector3 Direction = Bounty.transform.position - transform.position;
-        float Angle = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg + 90;
-        Quaternion TargetRotation = Quaternion.Euler(0, 0, Angle);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, TargetRotation, TurnSpeed);
 
-        if (Distance < 3)
+        float TargetDistance = Vector3.Distance(this.transform.position, Target.transform.position);
+
+        if (TargetDistance < 3)
         {
             // Move towards bounty at a slower speed to help aim
-            transform.Translate(new Vector3(0, (-Speed * 0) * Time.deltaTime, 0));
-            if (HasFired == false)
-            {
-                StartCoroutine(Fire());
-            }
+            MoveTowardsObject(Target, 0);
+
+            Attack();
         }
-        else if (Distance < 6)
+        else if (TargetDistance < 6)
         {
             // Move towards bounty at a slower speed to help aim
-            transform.Translate(new Vector3(0, (-Speed / 2) * Time.deltaTime, 0));
-            if (HasFired == false)
-            {
-                StartCoroutine(Fire());
-            }
+            MoveTowardsObject(Target, Speed/2);
+
+            Attack();
         }
         else
         {
             // Move towards bounty
-            transform.Translate(new Vector3(0, -Speed * Time.deltaTime, 0));
+            MoveTowardsObject(Target, Speed);
         }
     }
 
@@ -152,7 +126,12 @@ public class BountyHunter : Ship
     {
         Bounties = GameObject.FindGameObjectsWithTag("Enemy");
 
-        if (Bounty == null)
+        if (Bounty != null)
+        {
+            Distance = Vector3.Distance(this.transform.position, Bounty.transform.position);
+        }
+
+        if (Bounty == null && Bounties.Length > 0)
         {
             Bounty = Bounties[Random.Range(0,Bounties.Length)];
         }
@@ -169,71 +148,4 @@ public class BountyHunter : Ship
         IsTracking = false;
     }
     #endregion
-
-    #region Ship Functions
-    IEnumerator Fire()
-    {
-        GameObject Laser = Instantiate(Projectile, new Vector3(this.transform.position.x, this.transform.position.y, 0f), this.transform.rotation);
-        Laser.GetComponent<ProjectileController>().Damage = Damage;
-        Laser.GetComponent<ProjectileController>().Owner = this.gameObject;
-        HasFired = true;
-        yield return new WaitForSeconds(0.5f);
-        HasFired = false;
-    }
-
-    void HasHealth()
-    {
-        if (CurrentHealth <= 0)
-        {
-            StartCoroutine(DestroyShip());
-        }
-    }
-
-    void TransferDigits()
-    {
-        switch (HitBy.tag)
-        {
-            case "Player":
-                HitBy.GetComponent<Player>().Digits = HitBy.GetComponent<Player>().Digits + Digits;
-                break;
-        }
-    }
-
-    IEnumerator DestroyShip()
-    {
-        Instantiate(Smoke, new Vector3(this.transform.position.x, this.transform.position.y, 0f), this.transform.rotation);
-        yield return new WaitForSeconds(0.1f);
-        TransferDigits();
-        Destroy(this.gameObject);
-    }
-
-    void OnTriggerEnter2D(Collider2D Other)
-    {
-        switch (Other.gameObject.tag)
-        {
-            case "Laser":
-                if (Other.GetComponent<ProjectileController>().Owner != this.gameObject)
-                {
-                    HitBy = Other.GetComponent<ProjectileController>().Owner;
-
-                    // TEMP
-                    Bounty = HitBy;
-                    //
-
-                    GameObject Explosion = Other.GetComponent<ProjectileController>().Explosion;
-                    Instantiate(Explosion, new Vector3(Other.transform.position.x, Other.transform.position.y, 0f), Other.transform.rotation);
-                    Destroy(Other.gameObject);
-                    CurrentHealth = CurrentHealth - Other.GetComponent<ProjectileController>().Damage;
-                }
-                break;
-        }
-
-    }
-    #endregion
-
-    // ATTACK Bounty
-
-    // Constantly tries to track down and attack bounty
-    // Will retaliate if provoked
-
 }

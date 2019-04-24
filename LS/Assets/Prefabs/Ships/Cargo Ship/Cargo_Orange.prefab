@@ -120,12 +120,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da77008bebb4e894cb67fa98f77a9dfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damage: 0
   Speed: 0
   TurnSpeed: 0
   MaxHealth: 0
   CurrentHealth: 0
   Shields: 0
-  Smoke: {fileID: 0}
+  CurrentCargo: 0
+  MaxCargo: 0
+  Zone: 0
+  BountyPrice: 0
+  RoamDestination: {x: 0, y: 0, z: 0}
+  Digits: 0
+  DigitsTransferred: 0
+  Cargo: 
+  CargoDropped: 0
+  Attacker: {fileID: 0}
+  HitBy: {fileID: 0}
+  HasFired: 0
+  Projectile: {fileID: 0}
+  Smoke: {fileID: 1978882998067194, guid: 02b9ffe498648b447b33b1e10cba320c, type: 2}
+  Loot: {fileID: 1375428497973190, guid: 322ce6b8eebca34489f6e816c3a37197, type: 2}
   Destination: {fileID: 0}
   Attacker: {fileID: 0}
   Cargo: 
