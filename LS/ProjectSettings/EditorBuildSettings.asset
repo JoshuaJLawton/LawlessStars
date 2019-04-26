@@ -14,7 +14,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Test/#SS_Scene.unity
     guid: ca3b7332ab7b09c4eaef8e23669bfa4a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test/BountyHunter.unity
     guid: a9a343bf2c52f7a49b614aeb0e805481
+  - enabled: 1
+    path: Assets/Scenes/Test/Pirate.unity
+    guid: 9431bacf8f8d6374a9d59db4daae7807
   m_configObjects: {}

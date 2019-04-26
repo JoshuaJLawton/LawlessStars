@@ -32,6 +32,7 @@ public class BountyHunter : Ship
         HasFired = false;
         Attacker = null;
         RoamDestination = Destination();
+        Bounties = new GameObject[20];
     }
 
     // Update is called once per frame
@@ -48,15 +49,13 @@ public class BountyHunter : Ship
 
     void Hunt()
     {
-        UpdateBounty();
-
         if (IsBeingAttacked())
         {
             AttackTarget(Attacker);
         }
         else if (Bounty != null)
         {
-            if (Distance > 10)
+            if (Distance > 15)
             {
                 Debug.Log("TrackBounty");
                 TrackBounty();
@@ -67,11 +66,17 @@ public class BountyHunter : Ship
                 AttackTarget(Bounty);
             }
         }
-        else
+        else if(Bounty == null)
         {
-            Roam();
+            if (UpdateBounty() == null)
+            {
+                Roam();
+            }
+            else
+            {
+                Bounty = UpdateBounty();
+            }
         }
-
     }
 
 
@@ -106,14 +111,14 @@ public class BountyHunter : Ship
             // Move towards bounty at a slower speed to help aim
             MoveTowardsObject(Target, 0);
 
-            Attack();
+            Attack(Target);
         }
         else if (TargetDistance < 6)
         {
             // Move towards bounty at a slower speed to help aim
             MoveTowardsObject(Target, Speed/2);
 
-            Attack();
+            Attack(Target);
         }
         else
         {
@@ -122,19 +127,36 @@ public class BountyHunter : Ship
         }
     }
 
-    void UpdateBounty()
+    GameObject UpdateBounty()
     {
-        Bounties = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject HighBounty = null;
+        GameObject Player = GameObject.FindGameObjectWithTag("Player");
+        GameObject[] Pirates = GameObject.FindGameObjectsWithTag("Pirate");
 
-        if (Bounty != null)
+        Bounties = Pirates;
+
+        if (Bounties[0] != null)
         {
-            Distance = Vector3.Distance(this.transform.position, Bounty.transform.position);
+            HighBounty = Bounties[0];
+
+            foreach (GameObject Ship in Bounties)
+            {
+                if (Ship.GetComponent<Pirates>().BountyPrice > HighBounty.GetComponent<Pirates>().BountyPrice)
+                {
+                    HighBounty = Ship;
+                }
+            }
+        }
+        
+        if (Player != null && HighBounty != null)
+        {
+            if (Player.GetComponent<Player>().BountyPrice > HighBounty.GetComponent<Pirates>().BountyPrice)
+            {
+                HighBounty = Player;
+            }
         }
 
-        if (Bounty == null && Bounties.Length > 0)
-        {
-            Bounty = Bounties[Random.Range(0,Bounties.Length)];
-        }
+        return HighBounty;
     }
 
     

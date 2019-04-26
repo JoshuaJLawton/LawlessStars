@@ -755,6 +755,18 @@ public class Ship : MonoBehaviour {
         transform.Translate(new Vector3(0, -Speed * Time.deltaTime, 0));
     }
 
+    // Moves ship away from a gameobject
+    public void MoveAwayFromObject(GameObject Target, float Speed)
+    {
+        // Rotate towards
+        Vector3 Direction = Target.transform.position - transform.position;
+        float Angle = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg - 90;
+        Quaternion TargetRotation = Quaternion.Euler(0, 0, Angle);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, TargetRotation, TurnSpeed);
+        // Move towards
+        transform.Translate(new Vector3(0, -Speed * Time.deltaTime, 0));
+    }
+
     // Moves ship towards a location
     public void MoveTowardsLocation(Vector3 Target, float Speed)
     {
@@ -767,7 +779,7 @@ public class Ship : MonoBehaviour {
         transform.Translate(new Vector3(0, -Speed * Time.deltaTime, 0));
     }
 
-    // Moves ship towards a random location
+    // Constantly moves ship towards a random location
     public void Roam()
     {
         if (Vector3.Distance(this.transform.position, RoamDestination) < 5)
@@ -795,19 +807,30 @@ public class Ship : MonoBehaviour {
     #region Combat
 
     // Starts the enemy attacking
-    public void Attack()
+    public void Attack(GameObject Target)
     {
-        /*
-        RaycastHit hit;
-        if (Physics.Raycast(this.gameObject.transform.position, transform.up * -10, out hit))
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, 50);
+
+        if (this.gameObject.tag == "Player")
         {
-            Debug.Log(hit.transform.name + " was hit");
+            if (HasFired == false)
+            {
+                StartCoroutine(Fire());
+            }
         }
-        */
-        if (HasFired == false)
-        {           
-            StartCoroutine(Fire());
-        }
+        else
+        {
+            if (hit.collider != null)
+            {
+                if (hit.collider.gameObject.tag == Target.tag)
+                {
+                    if (HasFired == false)
+                    {
+                        StartCoroutine(Fire());
+                    }
+                }
+            }
+        }   
     }
 
     // Starts the enemy firing
@@ -828,12 +851,19 @@ public class Ship : MonoBehaviour {
         {
             return false;
         }
+        else if( Attacker != null && Vector3.Distance(this.gameObject.transform.position, Attacker.transform.position) > 20)
+        {
+            Attacker = null;
+            return false;
+        }
         else
         {
             return true;
         }
-    }
 
+
+        
+    }
     #endregion
 
     #endregion

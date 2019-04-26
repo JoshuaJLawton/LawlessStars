@@ -15,6 +15,7 @@ public class Pirates : Ship
         MaxCargo = GetCargoSize();
         Cargo = new int[MaxCargo];
         SetCargo();
+        Digits = SetDigits();
         MaxHealth = SetMaxHealth();
         CurrentHealth = MaxHealth;
         Speed = SetSpeed();
@@ -41,18 +42,19 @@ public class Pirates : Ship
 
     void Pirating()
     {
-        if (PlunderTarget == null)
-        {
-            PlunderTarget = SetPlunderTarget();
-        }
-
+        SetPlunderTarget();
+        
         if (IsBeingAttacked())
         {
-            AttackTarget(Attacker);
+            MoveAwayFromObject(Attacker, Speed);
         } 
         else if (PlunderTarget != null)
         {
             Plunder();
+        }
+        else if (IsCargo() && Cargo[MaxCargo - 1] == 0)
+        {
+            LootCargo();
         }
         else
         {
@@ -70,88 +72,146 @@ public class Pirates : Ship
 
     void Plunder()
     {
-        if (Attacker != null)
+        if (PlunderTarget != null && Attacker == null)
         {
-            AttackTarget(Attacker);
-        }
-        else if (PlunderTarget != null && Attacker == null)
-        {
+            Debug.Log("Is Attacking");
             AttackTarget(PlunderTarget);
+        }
+
+        if (Vector3.Distance(this.gameObject.transform.position, PlunderTarget.transform.position) > 20)
+        {
+            PlunderTarget = null;
         }
         
     }
 
-    GameObject SetPlunderTarget()
+    void SetPlunderTarget()
     {
+        /*
+        if (PlunderTarget == null && GetPlunderTargets() != null)
+        {
+            if (Vector3.Distance(this.gameObject.transform.position, GetPlunderTargets()[0].transform.position) < 15)
+            {
+                PlunderTarget = GetPlunderTargets()[0];
+            }
+            else
+            {
+                PlunderTarget = null;
+            }
+        }*/
 
-        GameObject Player = GameObject.FindGameObjectWithTag("Player");
+        List<GameObject> Targets = GetPlunderTargets();
+
+        if (Targets.Count != 0 && PlunderTarget == null)
+        {
+            if (Vector3.Distance(this.gameObject.transform.position, GetPlunderTargets()[0].transform.position) < 15)
+            {
+                PlunderTarget = GetPlunderTargets()[0];
+            }
+            else
+            {
+                PlunderTarget = null;
+            }
+        }
+
+    }
+
+    List<GameObject> GetPlunderTargets()
+    {
+        GameObject[] Player = GameObject.FindGameObjectsWithTag("Player");
         GameObject[] BountyHunters = GameObject.FindGameObjectsWithTag("Bounty Hunter");
         GameObject[] CargoShips = GameObject.FindGameObjectsWithTag("Cargo Ship");
         GameObject[] Transporters = GameObject.FindGameObjectsWithTag("Transporter");
 
-        List<GameObject> InRange = new List<GameObject>();
+        List<GameObject> Targets = new List<GameObject>();
 
-
-        // Adds the player to the list if in range
-        if (Vector3.Distance(this.gameObject.transform.position, Player.transform.position) <= 10)
+        // Adds the player to the list
+        if (Player != null)
         {
-            InRange.Add(Player);
+            foreach (GameObject Ship in Player)
+            {
+                Targets.Add(Ship);
+            }
         }
-        // Adds all Bounty Hunters in range
+        
+        // Adds all Bounty Hunters
+        /*
         foreach (GameObject Ship in BountyHunters)
         {
-            if (Vector3.Distance(this.gameObject.transform.position, Ship.transform.position) <= 10)
-            {
-                InRange.Add(Ship);
-            }
-        }
-        // Adds all Cargo Ships in range
+            Targets.Add(Ship);
+        } */
+        // Adds all Cargo Ships
         foreach (GameObject Ship in CargoShips)
         {
-            if (Vector3.Distance(this.gameObject.transform.position, Ship.transform.position) <= 10)
-            {
-                InRange.Add(Ship);
-            }
+            Targets.Add(Ship);
         }
-        // Adds all Transporters in range
+        // Adds all Transporters
         foreach (GameObject Ship in Transporters)
         {
-            if (Vector3.Distance(this.gameObject.transform.position, Ship.transform.position) <= 10)
-            {
-                InRange.Add(Ship);
-            }
+            Targets.Add(Ship);
         }
 
-        // Sorts the list of enemies in range by distance
-        InRange.Sort(delegate (GameObject a, GameObject b)
+        // Sorts the list of enemies by distance
+        Targets.Sort(delegate (GameObject a, GameObject b)
         {
             return Vector3.Distance(this.transform.position, a.transform.position).CompareTo(Vector3.Distance(this.transform.position, b.transform.position));
         });
- 
-        if (InRange == null)
-        {
-            return null;
-        }
-        else
-        {
-            //foreach
-            return InRange[0];
-        }
+
+        return Targets;
     }
 
     void AttackTarget(GameObject Target)
     {
-
-        float TargetDistance = Vector3.Distance(this.transform.position, Target.transform.position);
-
         MoveTowardsObject(Target, Speed);
-        Attack();
+        Attack(Target);
+    }
 
-        // pirate shoots at target (less frequent than BH)
-        // if pirate rams target, they must pause for a moment before continuing)
+    void LootCargo()
+    {
+        GameObject[] AllCargo = GameObject.FindGameObjectsWithTag("Cargo");
+        List<GameObject> Cargo = new List<GameObject>();
+
+        foreach (GameObject Loot in AllCargo)
+        {
+            Cargo.Add(Loot);
+        }
+
+        Cargo.Sort(delegate (GameObject a, GameObject b)
+        {
+            return Vector3.Distance(this.transform.position, a.transform.position).CompareTo(Vector3.Distance(this.transform.position, b.transform.position));
+        });
+
+        if (Vector3.Distance(this.gameObject.transform.position, Cargo[0].transform.position) < 20)
+        {
+            MoveTowardsObject(Cargo[0], Speed);
+        }
 
     }
 
+    bool IsCargo()
+    {
+        GameObject[] AllCargo = GameObject.FindGameObjectsWithTag("Cargo");
+        List<GameObject> Cargo = new List<GameObject>();
+
+        foreach (GameObject Loot in AllCargo)
+        {
+            Cargo.Add(Loot);
+        }
+
+        Cargo.Sort(delegate (GameObject a, GameObject b)
+        {
+            return Vector3.Distance(this.transform.position, a.transform.position).CompareTo(Vector3.Distance(this.transform.position, b.transform.position));
+        });
+
+        if (Vector3.Distance(this.gameObject.transform.position, Cargo[0].transform.position) < 20)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 
     #endregion

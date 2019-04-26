@@ -8,8 +8,10 @@ public class Player : Ship {
 
     public int CargoHold;
 
-    // Use this for initialization
-    void Start ()
+    int LayerMaskName;
+
+// Use this for initialization
+void Start ()
     {
         Digits = 0;
 
@@ -24,9 +26,11 @@ public class Player : Ship {
         Shields = 5;
 
         HasFired = false;
+        LayerMaskName = LayerMask.GetMask("Pirate", "Bounty Hunter");
 
-  
-	}
+        BountyPrice = 500;
+
+    }
 
     // Update is called once per frame
     void Update()
@@ -37,15 +41,12 @@ public class Player : Ship {
 
         SortCargo();
 
-        Debug.DrawRay(this.gameObject.transform.position, transform.up * -10);
+        Debug.DrawRay(this.gameObject.transform.position, transform.up * -20);
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up * -10);
+        
 
-        if (hit.collider != null)
-        {
-            Debug.Log(hit.transform.gameObject.name + " was hit");
-        }
-
+        
+        
     }
 
     void PlayerControls()
@@ -61,7 +62,7 @@ public class Player : Ship {
         // Fire Laser
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Attack();
+            Attack(this.gameObject);
         }
     }
 
