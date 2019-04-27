@@ -14,19 +14,37 @@ public class UIController : MonoBehaviour {
     public GameObject InventoryPanel;
     public Text[] InventorySlot = new Text[50];
 
-	// Use this for initialization
-	void Start ()
+    public Text IsNearStation;
+    public GameObject StationPanel, PawnBrokerPanel, ShipsRUsPanel;
+
+    [Header("Ships R Us")]
+    public int[] Prices = new int[6];
+    public Text[] UpgradePrices = new Text[6];
+    public Text[] UpgradeButtons = new Text[6];
+
+
+    // Use this for initialization
+    void Start ()
     {
-        _player = Player.GetComponent<Player>();
+        
+
         InventoryPanel.SetActive(false);
+        StationPanel.SetActive(false);
+        IsNearStation.gameObject.SetActive(false);
+        ShipsRUsPanel.SetActive(false);
+        PawnBrokerPanel.SetActive(false);
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
+        _player = Player.GetComponent<Player>();
+
         DisplayHealthAndShields();
         DisplayDigits();
         DisplayInventory();
+        DisplayStation();
+        ShipsRUs();
 	}
 
     void DisplayHealthAndShields()
@@ -47,9 +65,7 @@ public class UIController : MonoBehaviour {
         else
         {
             Shields.text = "No Shields!";
-        }
-
-        
+        }  
     }
 
     void DisplayDigits()
@@ -62,15 +78,18 @@ public class UIController : MonoBehaviour {
     {
         int counter1 = 0, counter2 = 0;
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (!StationPanel.activeSelf || !PawnBrokerPanel.activeSelf || !ShipsRUsPanel.activeSelf)
         {
-            if (InventoryPanel.activeSelf)
+            if (Input.GetKeyDown(KeyCode.Mouse1))
             {
-                InventoryPanel.SetActive(false);
-            }
-            else
-            {
-                InventoryPanel.SetActive(true);
+                if (InventoryPanel.activeSelf)
+                {
+                    InventoryPanel.SetActive(false);
+                }
+                else
+                {
+                    InventoryPanel.SetActive(true);
+                }
             }
         }
 
@@ -87,16 +106,16 @@ public class UIController : MonoBehaviour {
             counter1++;
         }
 
-        while (counter2 < 50)
+        while (counter2 < _player.MaxCargo)
         {
             // InventorySlot[counter2].text = (counter2 + 1) + ". " + GetLootName(1 + counter2);
-            if (_player.Cargo[counter2] != 0)
+            if (_player.Cargo[counter2] == 0)
             {
-                InventorySlot[counter2].text = (counter2 + 1) + ". " + GetLootName(_player.Cargo[counter2]);
+                InventorySlot[counter2].text = (counter2 + 1) + ". Empty slot";
             }
             else
             {
-                InventorySlot[counter2].text = (counter2 + 1) + ". Empty slot";
+                InventorySlot[counter2].text = (counter2 + 1) + ". " + GetLootName(_player.Cargo[counter2]);
             }
             counter2++;
         }
@@ -113,6 +132,307 @@ public class UIController : MonoBehaviour {
             counter++;
         }
     }
+
+    #region Station
+
+    void DisplayStation()
+    {
+        if (_player.IsNearStation)
+        {
+            if (StationPanel.activeSelf || PawnBrokerPanel.activeSelf || ShipsRUsPanel.activeSelf)
+            {
+                IsNearStation.gameObject.SetActive(false);
+            }
+            else
+            {
+                IsNearStation.gameObject.SetActive(true);
+            }
+                
+            if (Input.GetKey(KeyCode.Return))
+            {
+                InventoryPanel.SetActive(false);
+                StationPanel.SetActive(true);
+            }
+        }
+        else
+        {
+            IsNearStation.gameObject.SetActive(false);
+        }
+    }
+
+    public void CloseStation()
+    {
+        StationPanel.SetActive(false);
+    }
+
+    public void OpenShipsRUs()
+    {
+        StationPanel.SetActive(false);
+        ShipsRUsPanel.SetActive(true);
+        Debug.Log(this.gameObject.name);
+    }
+
+    public void OpenPawnBroker()
+    {
+        StationPanel.SetActive(false);
+        PawnBrokerPanel.SetActive(true);
+        Debug.Log(this.gameObject.name);
+    }
+
+    public void ReturnToMenu()
+    {
+        ShipsRUsPanel.SetActive(false);
+        PawnBrokerPanel.SetActive(false);
+        StationPanel.SetActive(true);
+    }
+
+    public void NewGalaxy()
+    {
+        // Saves all player stats and opens the main menu
+    }
+
+    public void SaveAndExit()
+    {
+        // Saves all player stats and opens the main menu
+    }
+
+    #endregion
+
+    #region Ships'R'Us
+
+    void ShipsRUs()
+    {
+        UpdatePrices();
+        DisplayPrices();
+    }
+
+    void UpdatePrices()
+    {
+        switch(_player.LvlHealth)
+        {
+            case 1:
+                Prices[0] = 250;
+                break;
+            case 2:
+                Prices[0] = 500;
+                break;
+            case 3:
+                Prices[0] = 1000;
+                break;
+            case 4:
+                Prices[0] = 2500;
+                break;
+        }
+
+        switch (_player.LvlShields)
+        {
+            case 1:
+                Prices[1] = 250;
+                break;
+            case 2:
+                Prices[1] = 500;
+                break;
+            case 3:
+                Prices[1] = 1000;
+                break;
+            case 4:
+                Prices[1] = 2500;
+                break;
+        }
+
+        switch (_player.LvlDamage)
+        {
+            case 1:
+                Prices[2] = 250;
+                break;
+            case 2:
+                Prices[2] = 500;
+                break;
+            case 3:
+                Prices[2] = 1000;
+                break;
+            case 4:
+                Prices[5] = 2500;
+                break;
+        }
+
+        switch (_player.LvlSpeed)
+        {
+            case 1:
+                Prices[3] = 250;
+                break;
+            case 2:
+                Prices[3] = 500;
+                break;
+            case 3:
+                Prices[3] = 1000;
+                break;
+            case 4:
+                Prices[5] = 2500;
+                break;
+        }
+
+        switch (_player.LvlTurnSpeed)
+        {
+            case 1:
+                Prices[4] = 250;
+                break;
+            case 2:
+                Prices[4] = 500;
+                break;
+            case 3:
+                Prices[4] = 1000;
+                break;
+            case 4:
+                Prices[4] = 2500;
+                break;
+        }
+
+        switch (_player.LvlCargo)
+        {
+            case 1:
+                Prices[5] = 250;
+                break;
+            case 2:
+                Prices[5] = 500;
+                break;
+            case 3:
+                Prices[5] = 1000;
+                break;
+            case 4:
+                Prices[5] = 2500;
+                break;
+        }
+    }
+
+    void DisplayPrices()
+    {
+        if (_player.LvlHealth < 5)
+        {
+            UpgradePrices[0].text = Prices[0] + " Digits";
+        }
+        else
+        {
+            UpgradePrices[0].text = "MAXED";
+            UpgradeButtons[0].enabled = false;
+        }
+
+        if (_player.LvlShields < 5)
+        {
+            UpgradePrices[1].text = Prices[1] + " Digits";
+        }
+        else
+        {
+            UpgradePrices[1].text = "MAXED";
+            UpgradeButtons[1].enabled = false;
+        }
+
+        if (_player.LvlDamage < 5)
+        {
+            UpgradePrices[2].text = Prices[2] + " Digits";
+        }
+        else
+        {
+            UpgradePrices[2].text = "MAXED";
+            UpgradeButtons[2].enabled = false;
+        }
+
+        if (_player.LvlSpeed < 5)
+        {
+            UpgradePrices[3].text = Prices[3] + " Digits";
+        }
+        else
+        {
+            UpgradePrices[3].text = "MAXED";
+            UpgradeButtons[3].enabled = false;
+        }
+
+        if (_player.LvlTurnSpeed < 5)
+        {
+            UpgradePrices[4].text = Prices[4] + " Digits";
+        }
+        else
+        {
+            UpgradePrices[4].text = "MAXED";
+            UpgradeButtons[4].enabled = false;
+        }
+
+        if (_player.LvlCargo < 5)
+        {
+            UpgradePrices[5].text = Prices[5] + " Digits";
+        }
+        else
+        {
+            UpgradePrices[5].text = "MAXED";
+            UpgradeButtons[5].enabled = false;
+        }
+    }
+
+    public void UpgradeHealth()
+    {
+        if (_player.Digits >= Prices[0] && _player.LvlHealth < 5)
+        {
+            _player.Digits = _player.Digits - Prices[0];
+            _player.LvlHealth++;
+            _player.SetPlayerStats();
+            _player.CurrentHealth =_player.MaxHealth;
+            
+        }
+    }
+
+    public void UpgradeShields()
+    {
+        if (_player.Digits >= Prices[1] && _player.LvlShields < 5)
+        {
+            _player.Digits = _player.Digits - Prices[1];
+            _player.LvlShields++;
+            _player.SetPlayerStats();
+        }
+    }
+
+    public void UpgradeDamage()
+    {
+        if (_player.Digits >= Prices[2] && _player.LvlDamage < 5)
+        {
+            _player.Digits = _player.Digits - Prices[2];
+            _player.LvlDamage++;
+            _player.SetPlayerStats();
+        }
+    }
+
+    public void UpgradeSpeed()
+    {
+        if (_player.Digits >= Prices[3] && _player.LvlSpeed < 5)
+        {
+            _player.Digits = _player.Digits - Prices[3];
+            _player.LvlSpeed++;
+            _player.SetPlayerStats();
+        }
+    }
+
+    public void UpgradeTurnSpeed()
+    {
+        if (_player.Digits >= Prices[4] && _player.LvlTurnSpeed < 5)
+        {
+            _player.Digits = _player.Digits - Prices[4];
+            _player.LvlTurnSpeed++;
+            _player.SetPlayerStats();
+        }
+    }
+
+    public void UpgradeCargoHold()
+    {
+        if (_player.Digits >= Prices[5] && _player.LvlCargo < 5)
+        {
+            _player.Digits = _player.Digits - Prices[5];
+            _player.LvlCargo++;
+            _player.Cargo = new int[_player.MaxCargo];
+            _player.SetPlayerStats();
+
+        }
+    }
+
+    #endregion
 
     string GetLootName(int LootID)
     {

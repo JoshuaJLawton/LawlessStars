@@ -691,11 +691,30 @@ public class Ship : MonoBehaviour {
 
             case "Station":
 
-                Debug.Log("Station in view");
+                if (this.gameObject.tag == "Player")
+                {
+                    this.gameObject.GetComponent<Player>().IsNearStation = true;
+                }
 
                 break;
         }
     }
+
+    private void OnTriggerExit2D(Collider2D Other)
+    {
+        switch (Other.gameObject.tag)
+        {
+            case "Station":
+
+                if (this.gameObject.tag == "Player")
+                {
+                    this.gameObject.GetComponent<Player>().IsNearStation = false;
+                }
+
+                break;
+        }
+    }
+
 
     private void OnCollisionEnter2D(Collision2D Other)
     {
@@ -726,7 +745,7 @@ public class Ship : MonoBehaviour {
     {
         int counter = 0;
 
-        while (counter <= 19)
+        while (counter < MaxCargo)
         {
             if (counter != 0)
             {
