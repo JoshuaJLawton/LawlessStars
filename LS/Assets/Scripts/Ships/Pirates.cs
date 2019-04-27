@@ -7,6 +7,9 @@ public class Pirates : Ship
     // Pirate will attack a target within range
     public GameObject PlunderTarget;
 
+    public bool IsOneSprite;
+    public Sprite[] Ships = new Sprite[4];
+
     // Use this for initialization
     void Start()
     {
@@ -29,6 +32,11 @@ public class Pirates : Ship
         Attacker = null;
         PlunderTarget = null;
         RoamDestination = Destination();
+
+        if (SetSprite() != null)
+        {
+            GetComponent<SpriteRenderer>().sprite = SetSprite();
+        }
     }
 
     // Update is called once per frame
@@ -36,6 +44,18 @@ public class Pirates : Ship
     {
         IsAlive();
         Pirating();
+    }
+
+    Sprite SetSprite()
+    {
+        if (IsOneSprite)
+        {
+            return Ships[Random.Range(0, 4)];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     #region Pirating
@@ -140,6 +160,7 @@ public class Pirates : Ship
         {
             Targets.Add(Ship);
         } */
+
         // Adds all Cargo Ships
         foreach (GameObject Ship in CargoShips)
         {

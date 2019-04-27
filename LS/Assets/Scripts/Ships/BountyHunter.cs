@@ -16,6 +16,9 @@ public class BountyHunter : Ship
     // The current distance between the Hunter and its bounty
     public float Distance;
 
+    public bool IsOneSprite;
+    public Sprite[] Ships = new Sprite[4];
+
     // Use this for initialization
     void Start()
     {
@@ -33,6 +36,11 @@ public class BountyHunter : Ship
         Attacker = null;
         RoamDestination = Destination();
         Bounties = new GameObject[20];
+
+        if (SetSprite() != null)
+        {
+            GetComponent<SpriteRenderer>().sprite = SetSprite();
+        }
     }
 
     // Update is called once per frame
@@ -43,6 +51,18 @@ public class BountyHunter : Ship
 
         IsAlive();
         Hunt();        
+    }
+
+    Sprite SetSprite()
+    {
+        if (IsOneSprite)
+        {
+            return Ships[Random.Range(0, 4)];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     #region Bounty Hunting

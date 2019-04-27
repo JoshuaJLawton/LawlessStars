@@ -8,8 +8,6 @@ public class Player : Ship {
 
     public int CargoHold;
 
-    int LayerMaskName;
-
 // Use this for initialization
 void Start ()
     {
@@ -26,7 +24,6 @@ void Start ()
         Shields = 5;
 
         HasFired = false;
-        LayerMaskName = LayerMask.GetMask("Pirate", "Bounty Hunter");
 
         BountyPrice = 500;
 

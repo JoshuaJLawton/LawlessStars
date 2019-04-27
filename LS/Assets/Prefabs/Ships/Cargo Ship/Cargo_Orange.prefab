@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114536320304788406}
   m_Layer: 0
   m_Name: Cargo_Orange
-  m_TagString: Untagged
+  m_TagString: Cargo Ship
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1874993867272308}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.8, y: -15.521184, z: 0}
+  m_LocalPosition: {x: -28.45325, y: 27.00998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -139,11 +139,16 @@ MonoBehaviour:
   HitBy: {fileID: 0}
   HasFired: 0
   Projectile: {fileID: 0}
-  Smoke: {fileID: 1978882998067194, guid: 02b9ffe498648b447b33b1e10cba320c, type: 2}
-  Loot: {fileID: 1375428497973190, guid: 322ce6b8eebca34489f6e816c3a37197, type: 2}
-  Destination: {fileID: 0}
-  Attacker: {fileID: 0}
-  Cargo: 
+  Smoke: {fileID: 1375428497973190, guid: 322ce6b8eebca34489f6e816c3a37197, type: 2}
+  Loot: {fileID: 1978882998067194, guid: 02b9ffe498648b447b33b1e10cba320c, type: 2}
+  CargoDestination: {fileID: 0}
+  TurnDirection: 0
+  IsOneSprite: 1
+  Ships:
+  - {fileID: 21300000, guid: da9f6d284d4019141ba091cf2f75611a, type: 3}
+  - {fileID: 21300000, guid: 0c2158c692d6f194ab2448c9fd67ae63, type: 3}
+  - {fileID: 21300000, guid: 433cfa37d1bda7745bd389be14f8088d, type: 3}
+  - {fileID: 21300000, guid: da5aefc49dac88742bb0fdcd3fc5b819, type: 3}
 --- !u!212 &212964060735343042
 SpriteRenderer:
   m_ObjectHideFlags: 1

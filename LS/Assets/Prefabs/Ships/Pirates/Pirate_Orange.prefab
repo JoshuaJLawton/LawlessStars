@@ -147,6 +147,12 @@ MonoBehaviour:
   Smoke: {fileID: 1375428497973190, guid: 322ce6b8eebca34489f6e816c3a37197, type: 2}
   Loot: {fileID: 1978882998067194, guid: 02b9ffe498648b447b33b1e10cba320c, type: 2}
   PlunderTarget: {fileID: 0}
+  IsOneSprite: 1
+  Ships:
+  - {fileID: 21300000, guid: 6df6947b033ce6347bf34af123594533, type: 3}
+  - {fileID: 21300000, guid: e8b1fbb338e71d44e8477866be56e87d, type: 3}
+  - {fileID: 21300000, guid: 750e1385418214d4e8c32a3ff5474f79, type: 3}
+  - {fileID: 21300000, guid: f0cd3cad54436ba42badfb3852f69386, type: 3}
 --- !u!212 &212267957651429280
 SpriteRenderer:
   m_ObjectHideFlags: 1

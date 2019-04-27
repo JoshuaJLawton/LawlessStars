@@ -20,9 +20,6 @@ public class LootController : MonoBehaviour {
         RB.AddForce(new Vector2(Direction, Force));
 
         GetComponent<SpriteRenderer>().sprite = SetSprite();
-
-        Debug.Log("CARGO SPAWNED");
-
     }
 	
 	// Update is called once per frame

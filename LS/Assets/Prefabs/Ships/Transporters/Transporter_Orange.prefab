@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114007775477959998}
   m_Layer: 0
   m_Name: Transporter_Orange
-  m_TagString: Untagged
+  m_TagString: Transporter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -89,15 +89,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9acc6683fcb14fc43b2fc3c849e3a287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damage: 0
   Speed: 0
   TurnSpeed: 0
   MaxHealth: 0
   CurrentHealth: 0
   Shields: 0
-  Smoke: {fileID: 0}
-  Destination: {fileID: 0}
-  Attacker: {fileID: 0}
+  CurrentCargo: 0
+  MaxCargo: 0
+  Zone: 0
+  BountyPrice: 0
+  RoamDestination: {x: 0, y: 0, z: 0}
   Digits: 0
+  DigitsTransferred: 0
+  Cargo: 
+  CargoDropped: 0
+  Attacker: {fileID: 0}
+  HitBy: {fileID: 0}
+  HasFired: 0
+  Projectile: {fileID: 0}
+  Smoke: {fileID: 1375428497973190, guid: 322ce6b8eebca34489f6e816c3a37197, type: 2}
+  Loot: {fileID: 1978882998067194, guid: 02b9ffe498648b447b33b1e10cba320c, type: 2}
+  PassengerDestination: {fileID: 0}
+  TurnDirection: 0
+  IsOneSprite: 1
+  Ships:
+  - {fileID: 21300000, guid: 75f7397af5a86b546800a543ef1235ac, type: 3}
+  - {fileID: 21300000, guid: 65b0709a8b985f64e98a6e37bdb4d418, type: 3}
+  - {fileID: 21300000, guid: 8cdad7b922c7719489b4f18f676b059a, type: 3}
+  - {fileID: 21300000, guid: 9cb50025e9bf58d479ccd8ef9c4aaada, type: 3}
 --- !u!212 &212408288319705028
 SpriteRenderer:
   m_ObjectHideFlags: 1

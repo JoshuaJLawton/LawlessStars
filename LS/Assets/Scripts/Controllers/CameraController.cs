@@ -28,6 +28,19 @@ public class CameraController : MonoBehaviour
 
         this.transform.position = Position;
 
+        SwitchTarget();
+    }
+
+    void SwitchTarget()
+    {
+        if (Ship.tag == "Player")
+        {
+            if (Ship.GetComponent<Player>().CurrentHealth <= 0)
+            {
+                Ship = Ship.GetComponent<Player>().HitBy;
+            }
+        }
+        
     }
 }
 

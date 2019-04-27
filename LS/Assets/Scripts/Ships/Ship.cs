@@ -585,7 +585,7 @@ public class Ship : MonoBehaviour {
 
                 break;
 
-            case "CargoShip":
+            case "Cargo Ship":
 
                 switch (Zone)
                 {
@@ -659,7 +659,19 @@ public class Ship : MonoBehaviour {
                     GameObject Explosion = Other.GetComponent<ProjectileController>().Explosion;
                     Instantiate(Explosion, new Vector3(Other.transform.position.x, Other.transform.position.y, 0f), Other.transform.rotation);
                     Destroy(Other.gameObject);
-                    CurrentHealth = CurrentHealth - Other.GetComponent<ProjectileController>().Damage;
+
+                    if (Shields > 0)
+                    {
+                        Shields = Shields - Other.GetComponent<ProjectileController>().Damage;
+                        if (Shields < 0)
+                        {
+                            Shields = 0;
+                        }
+                    }
+                    else
+                    {
+                        CurrentHealth = CurrentHealth - Other.GetComponent<ProjectileController>().Damage;
+                    }
                 }
                 break;
 
@@ -881,7 +893,10 @@ public class Ship : MonoBehaviour {
     IEnumerator DestroyShip()
     {
         Destroy(this.gameObject.GetComponent<PolygonCollider2D>());
-        TransferDigits();
+        if (Digits != 0)
+        {
+            TransferDigits();
+        }
         DropCargo();
         Instantiate(Smoke, new Vector3(this.transform.position.x, this.transform.position.y, 0f), this.transform.rotation);
         yield return new WaitForSeconds(0.1f);
@@ -933,8 +948,24 @@ public class Ship : MonoBehaviour {
                             break;
                     }
                     break;
+                case "Transporter":
+                    switch (HitBy.tag)
+                    {
+                        case "Player":
+                            HitBy.GetComponent<Player>().Digits = HitBy.GetComponent<Player>().Digits + Digits;
+                            break;
+                        case "Bounty Hunter":
+                            HitBy.GetComponent<BountyHunter>().Digits = HitBy.GetComponent<BountyHunter>().Digits + Digits;
+                            break;
+                        case "Pirate":
+                            HitBy.GetComponent<Pirates>().Digits = HitBy.GetComponent<Pirates>().Digits + Digits;
+                            break;
+                    }
+                    break;
+
             }
             DigitsTransferred = true;
+            Debug.Log("TRANSFERRED");
         }    
     }
 
@@ -947,8 +978,9 @@ public class Ship : MonoBehaviour {
             {
                 if (Cargo[counter] != 0)
                 {
+                    Debug.Log("Cargo: " + Cargo[counter]);
                     GameObject LootCapsule = Instantiate(Loot, new Vector3(this.transform.position.x, this.transform.position.y, 0f), this.transform.rotation);
-                    LootCapsule.GetComponent<LootController>().LootID = Cargo[counter];
+                    LootCapsule.GetComponent<LootController>().LootID = Cargo[counter];                    
                 }
                 counter++;
             }

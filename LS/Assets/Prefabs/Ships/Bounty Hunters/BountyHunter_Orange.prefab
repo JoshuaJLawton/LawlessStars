@@ -140,6 +140,12 @@ MonoBehaviour:
   Tracker: {x: 0, y: 0, z: 0}
   IsTracking: 0
   Distance: 0
+  IsOneSprite: 1
+  Ships:
+  - {fileID: 21300000, guid: 63e0263abea01ed478f27ee84a152ae5, type: 3}
+  - {fileID: 21300000, guid: cb3faa86ca70f5041836171809d4d53b, type: 3}
+  - {fileID: 21300000, guid: 8eb32b1c2fd335148afab2f3c89285f4, type: 3}
+  - {fileID: 21300000, guid: 7df715ac2c16642458843b53a42439f1, type: 3}
 --- !u!212 &212594311060915260
 SpriteRenderer:
   m_ObjectHideFlags: 1
