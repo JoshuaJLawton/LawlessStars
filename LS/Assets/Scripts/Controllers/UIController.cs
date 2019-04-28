@@ -11,6 +11,7 @@ public class UIController : MonoBehaviour {
     public Text Health;
     public Text Shields;
     public Text Digits;
+    public Text Zone;
     public GameObject InventoryPanel;
     public Text[] InventorySlot = new Text[50];
 
@@ -26,8 +27,6 @@ public class UIController : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        
-
         InventoryPanel.SetActive(false);
         StationPanel.SetActive(false);
         IsNearStation.gameObject.SetActive(false);
@@ -42,6 +41,7 @@ public class UIController : MonoBehaviour {
 
         DisplayHealthAndShields();
         DisplayDigits();
+        DisplayZone();
         DisplayInventory();
         DisplayStation();
         ShipsRUs();
@@ -71,6 +71,11 @@ public class UIController : MonoBehaviour {
     void DisplayDigits()
     {
         Digits.text = "Digits: " + _player.Digits.ToString();
+    }
+
+    void DisplayZone()
+    {
+        Zone.text = "Zone: " + _player.Zone.ToString();
     }
 
 
