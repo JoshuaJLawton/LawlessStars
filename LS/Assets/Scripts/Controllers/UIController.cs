@@ -8,6 +8,9 @@ public class UIController : MonoBehaviour {
     public GameObject Player;
     private Player _player;
 
+    public GameObject Station;
+    public ShopController _station;
+
     public Text Health;
     public Text Shields;
     public Text Digits;
@@ -22,6 +25,10 @@ public class UIController : MonoBehaviour {
     public int[] Prices = new int[6];
     public Text[] UpgradePrices = new Text[6];
     public Text[] UpgradeButtons = new Text[6];
+
+    [Header("Pawnbroker")]
+    public Text[] SellNum = new Text[5];
+    public Text[] SellPrice = new Text[5];
 
 
     // Use this for initialization
@@ -45,6 +52,7 @@ public class UIController : MonoBehaviour {
         DisplayInventory();
         DisplayStation();
         ShipsRUs();
+        PawnBroker();
 	}
 
     void DisplayHealthAndShields()
@@ -434,6 +442,106 @@ public class UIController : MonoBehaviour {
             _player.Cargo = new int[_player.MaxCargo];
             _player.SetPlayerStats();
 
+        }
+    }
+
+    #endregion
+
+    #region Pawnbroker
+
+    void PawnBroker()
+    {
+        int CT = 0, T = 0, R = 0, U = 0, C = 0;
+
+        foreach (int Loot in _player.Cargo)
+        {
+            switch (GetLootRarity(Loot))
+            {
+                case 1:
+                    CT++;
+                    break;
+
+                case 2:
+                    T++;
+                    break;
+
+                case 3:
+                    R++;
+                    break;
+
+                case 4:
+                    U++;
+                    break;
+
+                case 5:
+                    C++;
+                    break;
+            }
+        }
+
+        SellNum[0].text = CT.ToString();
+        SellNum[1].text = T.ToString();
+        SellNum[2].text = R.ToString();
+        SellNum[3].text = U.ToString();
+        SellNum[4].text = C.ToString();
+
+        int counter = 0;
+
+        while (counter < 5)
+        {
+            SellPrice[counter].text = "";
+
+            counter++;
+        }
+    }
+
+
+    int GetLootRarity(int LootID)
+    {
+        if (LootID != 0)
+        {
+            if (LootID < 8)
+            {
+                return 1;
+            }
+            else if (LootID < 18)
+            {
+                return 2;
+            }
+            else if (LootID < 31)
+            {
+                return 3;
+            }
+            else if (LootID < 41)
+            {
+                return 4;
+            }
+            else
+            {
+                return 5;
+            }
+        }
+        else return 0;
+    }
+
+    void SetPrices()
+    {
+        int counter = 0;
+        int[] Prices = new int[5];
+
+        foreach (int Loot in _player.Cargo)
+        {
+            if (Loot != 0)
+            {
+                switch (Loot)
+            }
+        }
+
+        while (counter < 5)
+        {
+                SellPrice[counter].text = "";
+
+            counter++;
         }
     }
 
