@@ -224,9 +224,16 @@ public class Pirates : Ship
             return Vector3.Distance(this.transform.position, a.transform.position).CompareTo(Vector3.Distance(this.transform.position, b.transform.position));
         });
 
-        if (Vector3.Distance(this.gameObject.transform.position, Cargo[0].transform.position) < 20)
+        if (Cargo.Count !=0)
         {
-            return true;
+            if (Vector3.Distance(this.gameObject.transform.position, Cargo[0].transform.position) < 20)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {

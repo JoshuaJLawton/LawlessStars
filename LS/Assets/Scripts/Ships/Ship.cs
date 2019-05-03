@@ -59,6 +59,9 @@ public class Ship : MonoBehaviour {
     // Dropped by the ship upon death
     public GameObject Loot;
 
+    [Header("Other")]
+    public AudioClip Laser1, Laser2;
+
     #region Initialisation
 
     #region Damage

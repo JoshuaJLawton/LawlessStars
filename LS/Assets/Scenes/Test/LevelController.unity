@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3401,11 +3401,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4175089012168674, guid: 39d3d8dc75aef224facefbc7d53326de, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -12.0124855
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 4175089012168674, guid: 39d3d8dc75aef224facefbc7d53326de, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -4.6150393
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 4175089012168674, guid: 39d3d8dc75aef224facefbc7d53326de, type: 2}
       propertyPath: m_LocalPosition.z
@@ -5553,11 +5553,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4720484194939490, guid: adf983f64b1d5db44967ab7aa62bf90b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -5.43
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 4720484194939490, guid: adf983f64b1d5db44967ab7aa62bf90b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -4.45
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 4720484194939490, guid: adf983f64b1d5db44967ab7aa62bf90b, type: 2}
       propertyPath: m_LocalPosition.z
@@ -7180,11 +7180,13 @@ MonoBehaviour:
   ShipsInScene: []
   SpawnedStars: 0
   StarsInScene: []
-  Stars: {fileID: 0}
-  BountyHunter: {fileID: 0}
-  Pirate: {fileID: 0}
-  CargoShip: {fileID: 0}
-  Transporter: {fileID: 0}
+  Stars: {fileID: 1059453066401910, guid: 39d3d8dc75aef224facefbc7d53326de, type: 2}
+  BountyHunter: {fileID: 1747195674408394, guid: 766e5eab4bb18b84e98d013abc56144b,
+    type: 2}
+  Pirate: {fileID: 1922297565387674, guid: b604be32ab76e174d9e427c40f9a6282, type: 2}
+  CargoShip: {fileID: 1874993867272308, guid: 38e65890566b37d419c0bf4d9e974a66, type: 2}
+  Transporter: {fileID: 1898450677625992, guid: cb32116a1ea21bd4a89d90596b23a41d,
+    type: 2}
 --- !u!4 &855378927
 Transform:
   m_ObjectHideFlags: 0
@@ -13351,11 +13353,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4175089012168674, guid: 39d3d8dc75aef224facefbc7d53326de, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -18.236929
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 4175089012168674, guid: 39d3d8dc75aef224facefbc7d53326de, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.05329381
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 4175089012168674, guid: 39d3d8dc75aef224facefbc7d53326de, type: 2}
       propertyPath: m_LocalPosition.z
@@ -16098,6 +16100,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 236380135}
+  Station: {fileID: 0}
+  _station: {fileID: 0}
   Health: {fileID: 1407303472}
   Shields: {fileID: 634731557}
   Digits: {fileID: 650401498}

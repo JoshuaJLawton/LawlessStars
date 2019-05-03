@@ -34,6 +34,10 @@ public class UIController : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        Player = GameObject.Find("Player");
+        Station = GameObject.Find("Station");
+        _station = Station.gameObject.GetComponent<ShopController>();
+
         InventoryPanel.SetActive(false);
         StationPanel.SetActive(false);
         IsNearStation.gameObject.SetActive(false);
@@ -524,7 +528,7 @@ public class UIController : MonoBehaviour {
         else return 0;
     }
 
-    void SetPrices()
+    int SellValue()
     {
         int counter = 0;
         int[] Prices = new int[5];
@@ -534,6 +538,9 @@ public class UIController : MonoBehaviour {
             if (Loot != 0)
             {
                 switch (Loot)
+                {
+
+                }
             }
         }
 
@@ -543,6 +550,8 @@ public class UIController : MonoBehaviour {
 
             counter++;
         }
+
+        return counter;
     }
 
     #endregion

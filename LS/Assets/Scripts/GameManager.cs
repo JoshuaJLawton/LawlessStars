@@ -19,12 +19,21 @@ public class GameManager : MonoBehaviour {
         Player = GameObject.Find("Player");
 
         SpawnedStars = false;
+
+
+        
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
+        GetNumberOfShipsInScene();
         GetStarsInScene();
+
+        //SpawnShips();
+        SpawnStars();
+
+        
         //TrimStars();
 	}
 
@@ -57,6 +66,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    /*
     void SpawningStars()
     {
         if (!SpawnedStars)
@@ -70,7 +80,7 @@ public class GameManager : MonoBehaviour {
         
         yield return new WaitForSeconds(10f);
 
-    }
+    } */
 
     #endregion
 
@@ -83,6 +93,7 @@ public class GameManager : MonoBehaviour {
         GameObject[] CS = GameObject.FindGameObjectsWithTag("Cargo Ship");
         GameObject[] T = GameObject.FindGameObjectsWithTag("Transporter");
 
+        ShipsInScene.Clear();
 
         foreach (GameObject BountyHunter in BH)
         {
@@ -113,6 +124,78 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    void SpawnShips()
+    {
+        if (ShipsInScene.Count < 10)
+        {
+            int Rand = Random.Range(0, 4);
+            GameObject Ship = Pirate;
+
+            switch (Rand)
+            {
+                case 0:
+                    Ship = BountyHunter;
+                    break;
+                case 1:
+                    Ship = Pirate;
+                    break;
+                case 2:
+                    Ship = CargoShip;
+                    break;
+                case 3:
+                    Ship = Transporter;
+                    break;
+            }
+            Vector3 Spawn = new Vector3(Random.Range(-1500, 1500), Random.Range(-1500, 1500), 0);
+            
+            if (Vector3.Distance(this.gameObject.transform.position, Spawn) < 50 || Vector3.Distance(Player.transform.position, Spawn) < 50)
+            {
+                while (Vector3.Distance(this.gameObject.transform.position, Spawn) < 50 || Vector3.Distance(Player.transform.position, Spawn) < 50)
+                {
+                    Spawn = new Vector3(Random.Range(-1500, 1500), Random.Range(-1500, 1500), 0);
+                }
+            }
+
+            GameObject SpawnShip = Instantiate(Ship, Spawn, this.transform.rotation);
+        }
+    }
+
+    void SpawnStars()
+    {
+        bool StarInRange = false;
+        if (StarsInScene.Count < 100)
+        {
+            Vector3 Spawn = new Vector3(Player.transform.position.x + Random.Range(-50, 50), Player.transform.position.y + Random.Range(-50, 50), 0);
+
+            foreach (GameObject S in StarsInScene)
+            {
+                if (Vector3.Distance(Spawn, S.transform.position) < 5)
+                {
+                    StarInRange = true;
+                }
+            }
+
+            if (Vector3.Distance(Player.transform.position, Spawn) < 30 || StarInRange == true)
+            {
+                while (Vector3.Distance(Player.transform.position, Spawn) < 30 || StarInRange == true)
+                {
+                    StarInRange = false;
+                    Spawn = new Vector3(Player.transform.position.x + Random.Range(-50, 50), Player.transform.position.y + Random.Range(-50, 50), 0);
+
+                    foreach (GameObject S in StarsInScene)
+                    {
+                        if (Vector3.Distance(Spawn, S.transform.position) < 5)
+                        {
+                            StarInRange = true;
+                        }
+                    }
+                }
+            }
+
+            GameObject SpawnStar = Instantiate(Stars, Spawn, this.transform.rotation);
+
+        }
+    }
 
     #endregion
 }
